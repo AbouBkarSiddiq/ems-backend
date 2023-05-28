@@ -38,10 +38,10 @@ const upload = multer({
 router.post("/signup", upload.single('image'), async (req, res) => {
   try {
     
-    const { error } = userValidationSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-    }
+    // const { error } = userValidationSchema.validate(req.body);
+    // if (error) {
+    //   return res.status(400).json({ error: error.details[0].message });
+    // }
     const { name, email, password, isAdmin } = req.body;
     const image = req.file;
     const salt = await bcrypt.genSalt(10);
@@ -116,10 +116,10 @@ router.delete("/user/:id", async (req, res) => {
 
 router.put("/user/:id", upload.single("image"), async (req, res) => {
   try {
-    const { error } = userValidationSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-    }
+    // const { error } = userValidationSchema.validate(req.body);
+    // if (error) {
+    //   return res.status(400).json({ error: error.details[0].message });
+    // }
     const { id } = req.params;
     const { name, email, password, isAdmin } = req.body;
     // console.log(payload)
