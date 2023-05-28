@@ -81,9 +81,9 @@ router.post("/signup", upload.single('image'), async (req, res) => {
 router.get("/users", async (req, res) => {
   try {
     const userData = await User.find()
-    res.status(200).send({ messsage: "Users data fetched successfully.", data: userData })
+    res.status(200).json({ messsage: "Users data fetched successfully.", data: userData })
   } catch (error) {
-    res.status(404).send({ messsage: "Users data not found.", error })
+    res.status(404).json({ messsage: "Users data not found.", error })
   }
 })
 
@@ -93,9 +93,13 @@ router.get("/user/:id", async (req, res) => {
   try {
     const { id } = req.params
     const userData = await User.findById(id)
-    res.status(200).send({ messsage: "Single user data fetched successfully.", data: userData })
+    if(userData) {
+      res.status(200).json({ messsage: "Single user found successfully.", data: userData })
+    } else {
+      res.status(404).json({ messsage: "User not found."})
+    }
   } catch (error) {
-    res.status(404).send({ messsage: "Single user data fetched successfully.", error })
+    res.status(500).json({ messsage: "Internal server error.", error })
   }
 })
 
@@ -104,10 +108,14 @@ router.get("/user/:id", async (req, res) => {
 router.delete("/user/:id", async (req, res) => {
   try {
     const { id } = req.params
-    await User.findByIdAndDelete(id)
-    res.status(201).send({ messsage: "User deleted successfully." })
+    const deletedUser = await User.findByIdAndDelete(id)
+    if (deletedUser) {
+      res.status(200).json({ messsage: "User deleted successfully." })
+    } else {
+      res.status(404).json({ messsage: "User not found." })
+    }
   } catch (error) {
-    res.status(201).send({ messsage: "User not deleted.", error })
+    res.status(500).send({ messsage: "Internal server error.", error })
   }
 })
 
