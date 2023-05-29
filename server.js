@@ -9,6 +9,18 @@ const app = express();
 dotenv.config();
 
 app.use(cors());
+
+app.use(cors({
+  origin: 'http://localhost:3000', 
+  credentials: true, 
+}));
+
+app.options('*', cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}));
+
+
 app.use(express.json());
 
 app.use("/api", router);
